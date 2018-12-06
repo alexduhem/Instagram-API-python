@@ -293,23 +293,6 @@ class InstagramAPI:
                            'media_id': mediaId})
         return self.SendRequest('media/' + str(mediaId) + '/info/', self.generateSignature(data))
 
-    def deleteMedia(self, mediaId, media_type=1):
-        data = json.dumps({'_uuid': self.uuid,
-                           '_uid': self.username_id,
-                           '_csrftoken': self.token,
-                           'media_type': media_type,
-                           'media_id': mediaId})
-        return self.SendRequest('media/' + str(mediaId) + '/delete/', self.generateSignature(data))
-
-    def changePassword(self, newPassword):
-        data = json.dumps({'_uuid': self.uuid,
-                           '_uid': self.username_id,
-                           '_csrftoken': self.token,
-                           'old_password': self.password,
-                           'new_password1': newPassword,
-                           'new_password2': newPassword})
-        return self.SendRequest('accounts/change_password/', self.generateSignature(data))
-
     def explore(self):
         return self.SendRequest('discover/explore/')
 
@@ -326,55 +309,19 @@ class InstagramAPI:
                            '_csrftoken': self.token})
         return self.SendRequest('media/' + str(mediaId) + '/comment/' + str(commentId) + '/delete/', self.generateSignature(data))
 
-    def changeProfilePicture(self, photo):
-        # TODO Instagram.php 705-775
-        return False
 
-    def removeProfilePicture(self):
-        data = json.dumps({'_uuid': self.uuid,
-                           '_uid': self.username_id,
-                           '_csrftoken': self.token})
-        return self.SendRequest('accounts/remove_profile_picture/', self.generateSignature(data))
-
-    def setPrivateAccount(self):
-        data = json.dumps({'_uuid': self.uuid,
-                           '_uid': self.username_id,
-                           '_csrftoken': self.token})
-        return self.SendRequest('accounts/set_private/', self.generateSignature(data))
-
-    def setPublicAccount(self):
-        data = json.dumps({'_uuid': self.uuid,
-                           '_uid': self.username_id,
-                           '_csrftoken': self.token})
-        return self.SendRequest('accounts/set_public/', self.generateSignature(data))
-
-    def getProfileData(self):
-        data = json.dumps({'_uuid': self.uuid,
-                           '_uid': self.username_id,
-                           '_csrftoken': self.token})
-        return self.SendRequest('accounts/current_user/?edit=true', self.generateSignature(data))
-
-    def editProfile(self, url, phone, first_name, biography, email, gender):
-        data = json.dumps({'_uuid': self.uuid,
-                           '_uid': self.username_id,
-                           '_csrftoken': self.token,
-                           'external_url': url,
-                           'phone_number': phone,
-                           'username': self.username,
-                           'full_name': first_name,
-                           'biography': biography,
-                           'email': email,
-                           'gender': gender})
-        return self.SendRequest('accounts/edit_profile/', self.generateSignature(data))
 
     def getStory(self, usernameId):
         return self.SendRequest('feed/user/' + str(usernameId) + '/reel_media/')
 
+
     def getUsernameInfo(self, usernameId):
         return self.SendRequest('users/' + str(usernameId) + '/info/')
 
+
     def getSelfUsernameInfo(self):
         return self.getUsernameInfo(self.username_id)
+
 
     def getSelfSavedMedia(self):
         return self.SendRequest('feed/saved')
