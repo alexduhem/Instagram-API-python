@@ -68,7 +68,6 @@ class InstagramAPI:
             jar.set(key, morsel, domain=".instagram.com")
         self.s.cookies = jar
 
-
     def to_json(self):
         return {"device_id": self.device_id,
                 "username": self.username,
@@ -80,14 +79,20 @@ class InstagramAPI:
                 "token": self.token,
                 "cookies": self.s.cookies.get_dict()}
 
-    def __init__(self, username="", password="", debug=False, IGDataPath=None):
-        m = hashlib.md5()
-        m.update(username.encode('utf-8') + password.encode('utf-8'))
-        self.device_id = self.generateDeviceId(m.hexdigest())
-        self.setUser(username, password)
-        self.isLoggedIn = False
-        self.LastResponse = None
-        self.s = requests.Session()
+    def __init__(self, username="", password="", from_json=None):
+        if from_json is not None:
+            self.from_json(from_json)
+        else:
+            m = hashlib.md5()
+            m.update(username.encode('utf-8') + password.encode('utf-8'))
+            self.device_id = self.generateDeviceId(m.hexdigest())
+            self.setUser(username, password)
+            self.isLoggedIn = False
+            self.LastResponse = None
+            self.s = requests.Session()
+
+    def __str__(self):
+        return "%s %s" % (self.username, self.token)
 
     def setUser(self, username, password):
         self.username = username
@@ -109,7 +114,7 @@ class InstagramAPI:
     def login(self, force=False):
         if (not self.isLoggedIn or force):
             if (self.SendRequest('si/fetch_headers/?challenge_type=signup&guid=' + self.generateUUID(False), None,
-                                     True)):
+                                 True)):
 
                 data = {'phone_id': self.generateUUID(True),
                         '_csrftoken': self.LastResponse.cookies['csrftoken'],
@@ -132,6 +137,9 @@ class InstagramAPI:
                     # self.getRecentActivity()
                     print("Login success!\n")
                     return True
+                else:
+                    print("Login FAILED!\n")
+                    return False
 
     def syncFeatures(self):
         data = json.dumps({'_uuid': self.uuid,
