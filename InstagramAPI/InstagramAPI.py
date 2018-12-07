@@ -15,7 +15,6 @@ import sys
 from datetime import datetime
 import calendar
 import os
-from cookielib import CookieJar
 from requests_toolbelt import MultipartEncoder
 
 # Turn off InsecureRequestWarning
