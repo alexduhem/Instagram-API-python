@@ -378,6 +378,11 @@ class InstagramAPI:
                                  % (usernameId, maxid, minTimestamp, self.rank_token))
         return query
 
+
+    def getUserIgtv(self, usernameId, maxid=''):
+        query = self.SendRequest('igtv/channel/?id=user_%s&rank_token=%s' % (usernameId, self.rank_token))
+        return query
+
     def getSelfUserFeed(self, maxid='', minTimestamp=None):
         return self.getUserFeed(self.username_id, maxid, minTimestamp)
 
@@ -627,7 +632,7 @@ class InstagramAPI:
             except Exception as e:
                 print('Except on SendRequest (wait 60 sec and resend): ' + str(e))
                 time.sleep(60)
-
+        print(endpoint)
         if response.status_code == 200:
             self.LastResponse = response
             self.LastJson = json.loads(response.text)
