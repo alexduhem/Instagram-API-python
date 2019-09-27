@@ -525,11 +525,7 @@ class InstagramAPI:
         return self.SendRequest('friendships/unblock/' + str(userId) + '/', self.generateSignature(data))
 
     def userFriendship(self, userId):
-        data = json.dumps({'_uuid': self.uuid,
-                           '_uid': self.username_id,
-                           'user_id': userId,
-                           '_csrftoken': self.token})
-        return self.SendRequest('friendships/show/' + str(userId) + '/', self.generateSignature(data))
+        return self.SendRequest('friendships/show/' + str(userId) + '/')
 
     def getLikedMedia(self, maxid=''):
         return self.SendRequest('feed/liked/?max_id=' + str(maxid))
